@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --animate-spin-slow: spin 8s linear infinite;
+}
+
+@utility preserve-3d {
+  transform-style: preserve-3d;
+}
+
+@utility translate-z-16 {
+  transform: translateZ(4rem);
+}
+
+@utility -translate-z-16 {
+  transform: translateZ(-4rem);
+}
+
+@layer base {
+  body {
+    @apply bg-[#020408] text-slate-300 antialiased;
+  }
+}
