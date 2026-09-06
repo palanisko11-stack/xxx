@@ -20,7 +20,10 @@
     "vite": "^6.2.0",
     "express": "^4.21.2",
     "dotenv": "^17.2.3",
-    "motion": "^12.23.24"
+    "motion": "^12.23.24",
+    "three": "^0.160.0",
+    "@react-three/fiber": "^8.15.12",
+    "@react-three/drei": "^9.92.7"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
@@ -29,6 +32,7 @@
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
-    "@types/express": "^4.17.21"
+    "@types/express": "^4.17.21",
+    "@types/three": "^0.160.0"
   }
 }

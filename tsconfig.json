@@ -10,6 +10,7 @@
       "DOM.Iterable"
     ],
     "skipLibCheck": true,
+    "types": ["@react-three/fiber", "three"],
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
