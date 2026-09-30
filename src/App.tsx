@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { 
   Brain, 
   Zap, 
@@ -14,6 +14,7 @@ import {
   Database
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Reconstruction3DScene from './components/Reconstruction3DScene';
 
 // --- Types ---
 type Module = 'network' | 'synapse' | 'anatomy' | 'protocol' | 'hardwired' | 'memory' | 'reconstruction' | 'surface';
@@ -632,54 +633,42 @@ const Reconstruction3D = () => {
         </div>
 
         <div className="relative aspect-square bg-black/40 rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden">
-          {/* Visual Simulation */}
-          <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 opacity-10">
+          {/* Three.js 3D Scene */}
+          <div className="absolute inset-0">
+            <Suspense fallback={
+              <div className="w-full h-full flex items-center justify-center">
+                <Activity className="w-8 h-8 animate-spin text-cyan-400" />
+              </div>
+            }>
+              <Reconstruction3DScene isProcessing={isProcessing} />
+            </Suspense>
+          </div>
+          
+          {/* Grid Overlay */}
+          <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 opacity-10 pointer-events-none">
             {Array.from({ length: 64 }).map((_, i) => (
               <div key={i} className="border border-cyan-900/30" />
             ))}
           </div>
           
-          <AnimatePresence>
-            {isProcessing && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.2 }}
-                className="relative z-10"
-              >
-                {/* 3D Wireframe Cube Simulation */}
-                <div className="w-32 h-32 relative preserve-3d animate-spin-slow">
-                  <div className="absolute inset-0 border-2 border-cyan-500/50 transform translate-z-16" />
-                  <div className="absolute inset-0 border-2 border-cyan-500/50 transform -translate-z-16" />
-                  <div className="absolute inset-0 border-2 border-cyan-500/50 transform rotate-y-90 translate-z-16" />
-                  <div className="absolute inset-0 border-2 border-cyan-500/50 transform rotate-y-90 -translate-z-16" />
-                  <div className="absolute inset-0 border-2 border-cyan-500/50 transform rotate-x-90 translate-z-16" />
-                  <div className="absolute inset-0 border-2 border-cyan-500/50 transform rotate-x-90 -translate-z-16" />
-                  
-                  {/* Scanning Line */}
-                  <motion.div 
-                    animate={{ top: ['0%', '100%', '0%'] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="absolute left-0 right-0 h-0.5 bg-cyan-400 shadow-[0_0_10px_#22d3ee] z-20"
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
           {!isProcessing && (
-            <div className="text-slate-700 font-mono text-[10px] uppercase tracking-widest text-center">
+            <div className="relative z-10 text-slate-700 font-mono text-[10px] uppercase tracking-widest text-center">
               <Activity className="w-8 h-8 mx-auto mb-2 opacity-20" />
               Čekání na vstup...
             </div>
           )}
           
           {/* Data Stream Overlay */}
-          <div className="absolute bottom-4 left-4 right-4 flex justify-between font-mono text-[8px] text-cyan-900">
+          <div className="absolute bottom-4 left-4 right-4 flex justify-between font-mono text-[8px] text-cyan-900 z-20">
             <span>X: 102.44</span>
             <span>Y: 44.12</span>
             <span>Z: 8.99</span>
             <span>FPS: 60.0</span>
+          </div>
+          
+          {/* Interaction Hint */}
+          <div className="absolute top-4 right-4 text-[10px] text-cyan-900/50 font-mono z-20">
+            DRAG: Rotate | SCROLL: Zoom
           </div>
         </div>
       </div>
